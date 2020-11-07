@@ -36,35 +36,49 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 	int iLastButtons[MAXPLAYERS+1];
 	float fLastAngles[MAXPLAYERS+1][3];
 
-	if (buttons & IN_LEFT) {
-		if (!(iLastButtons[client] & IN_LEFT)) {
+	if (buttons & IN_LEFT)
+	{
+		if (!(iLastButtons[client] & IN_LEFT))
+		{
 			// Player started pressing +left so block +right
 			blockUse(client, IN_RIGHT);
 		}
+
 		if (g_iBlockUse[client] & IN_LEFT) {
 			// Player is not allowed to +left
 			TeleportEntity(client, NULL_VECTOR, fLastAngles[client], NULL_VECTOR);
 			return Plugin_Continue;
 		}
+
 		for (int i=0; i<3; ++i)
+		{
 			fLastAngles[client][i] = angles[i];
+		}
 	}
 
-	if (buttons & IN_RIGHT) {
-		if (!(iLastButtons[client] & IN_RIGHT)) {
+	if (buttons & IN_RIGHT)
+	{
+		if (!(iLastButtons[client] & IN_RIGHT))
+		{
 			// Player started pressing +right so block +left
 			blockUse(client, IN_LEFT);
 		}
-		if (g_iBlockUse[client] & IN_RIGHT) {
+
+		if (g_iBlockUse[client] & IN_RIGHT)
+		{
 			// Player is not allowed to +right
 			TeleportEntity(client, NULL_VECTOR, fLastAngles[client], NULL_VECTOR);
+
 			return Plugin_Continue;
 		}
-		for (int i=0; i<3; ++i)
-			fLastAngles[client][i] = angles[i];
-	}
 
+		for (int i=0; i<3; ++i)
+		{
+			fLastAngles[client][i] = angles[i];
+		}
+	}
 	iLastButtons[client] = buttons;
+
 	return Plugin_Continue;
 }
 
@@ -73,8 +87,11 @@ void blockUse(int client, int button)
 	g_iBlockUse[client] |= button;
 
 	int index = button / IN_LEFT - 1;
+
 	if (g_hTimers[client][index] != INVALID_HANDLE)
+	{
 		CloseHandle(g_hTimers[client][index]);
+	}
 
 	Handle pack;
 	g_hTimers[client][index] = CreateDataTimer(BLOCK_TIME, Timer_AllowUse, pack);
@@ -92,6 +109,5 @@ public Action Timer_AllowUse(Handle timer, Handle pack)
 	int index = button / IN_LEFT - 1;
 
 	g_hTimers[client][index] = INVALID_HANDLE;
-
 	g_iBlockUse[client] &= ~button;
 }
