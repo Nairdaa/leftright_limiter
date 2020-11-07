@@ -25,7 +25,7 @@ public void OnClientPutInServer(int client)
 	g_iBlockUse[client] = 0;
 }
 
-public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3], float angles[3], int &weapon)
+public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3], float angles[3])
 {
 	// Don't care if player is BOT or is dead
 	if (IsFakeClient(client) || !IsPlayerAlive(client))
