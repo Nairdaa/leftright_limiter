@@ -4,7 +4,7 @@
 #pragma semicolon 1
 #pragma newdecls required
 
-#define PLUGIN_VERSION "1.1"
+#define PLUGIN_VERSION "1.1.1"
 #define BLOCK_TIME 1.0
 
 int g_iBlockUse[MAXPLAYERS+1];
